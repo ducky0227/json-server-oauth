@@ -24,26 +24,26 @@ type ValidateHandler = ({ required }: { required: boolean }) => Handler
  */
 const validate: ValidateHandler =
 	({ required }) =>
-	(req, res, next) => {
-		const { email, password } = req.body as Partial<User>
+		(req, res, next) => {
+			const { email, password } = req.body as Partial<User>
 
-		if (required && (!email || !email.trim() || !password || !password.trim())) {
-			res.status(400).jsonp('Email and password are required')
-			return
+			if (required && (!email || !email.trim() || !password || !password.trim())) {
+				res.status(400).jsonp('Email and password are required')
+				return
+			}
+
+			if (email && !email.match(EMAIL_REGEX)) {
+				res.status(400).jsonp('Email format is invalid')
+				return
+			}
+
+			if (password && password.length < MIN_PASSWORD_LENGTH) {
+				res.status(400).jsonp('Password is too short')
+				return
+			}
+
+			next()
 		}
-
-		if (email && !email.match(EMAIL_REGEX)) {
-			res.status(400).jsonp('Email format is invalid')
-			return
-		}
-
-		if (password && password.length < MIN_PASSWORD_LENGTH) {
-			res.status(400).jsonp('Password is too short')
-			return
-		}
-
-		next()
-	}
 
 /**
  * Register / Create a user
@@ -80,21 +80,21 @@ const create: Handler = (req, res, next) => {
 			}
 		})
 		.then((user: User) => {
-			return new Promise<{ accessToken: string; user: User }>((resolve, reject) => {
+			return new Promise<{ access_token: string; user: User }>((resolve, reject) => {
 				jwt.sign(
 					{ email },
 					JWT_SECRET_KEY,
 					{ expiresIn: JWT_EXPIRES_IN, subject: String(user.id) },
-					(error, accessToken) => {
+					(error, access_token) => {
 						if (error) reject(error)
-						else resolve({ accessToken: accessToken!, user })
+						else resolve({ access_token: access_token!, user })
 					}
 				)
 			})
 		})
-		.then(({ accessToken, user }) => {
+		.then(({ access_token, user }) => {
 			const { password: _, ...userWithoutPassword } = user
-			res.status(201).jsonp({ accessToken, user: userWithoutPassword })
+			res.status(201).jsonp({ access_token, user: userWithoutPassword })
 		})
 		.catch(next)
 }
@@ -127,16 +127,16 @@ const login: Handler = (req, res, next) => {
 					{ email },
 					JWT_SECRET_KEY,
 					{ expiresIn: JWT_EXPIRES_IN, subject: String(user.id) },
-					(error, accessToken) => {
+					(error, access_token) => {
 						if (error) reject(error)
-						else resolve(accessToken!)
+						else resolve(access_token!)
 					}
 				)
 			})
 		})
-		.then((accessToken: string) => {
+		.then((access_token: string) => {
 			const { password: _, ...userWithoutPassword } = user
-			res.status(200).jsonp({ accessToken, user: userWithoutPassword })
+			res.status(200).jsonp({ access_token, user: userWithoutPassword })
 		})
 		.catch((err) => {
 			if (err === 400) res.status(400).jsonp('Incorrect password')
