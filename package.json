@@ -1,5 +1,5 @@
 {
-	"name": "json-server-auth",
+	"name": "json-server-oauth",
 	"description": "Authentication middleware for JSON Server",
 	"version": "2.1.0",
 	"author": "Jeremy Bensimon",
