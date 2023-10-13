@@ -3052,7 +3052,15 @@ json-parse-helpfulerror@^1.0.3:
   dependencies:
     jju "^1.1.0"
 
-json-server@^0.16.3:
+"json-server-oauth@github:ducky0227/json-server-oauth":
+  version "2.1.0"
+  resolved "git+ssh://git@github.com/ducky0227/json-server-oauth.git#85bd07cf886eacf0b81dab339a1952f6338bd768"
+  dependencies:
+    bcryptjs "^2.4.3"
+    jsonwebtoken "^8.5.1"
+    yargs "^16.2.0"
+
+json-server@*, json-server@^0.16.3:
   version "0.16.3"
   resolved "https://registry.npmjs.org/json-server/-/json-server-0.16.3.tgz"
   integrity sha512-tbsBONiefH7SR5EhSmK4EzwP3kCHuOduUq5hWAQjCwXTva4OBeKVcPrciHNWOK/+12ygtUnjuWcAxuHgqTuBLA==

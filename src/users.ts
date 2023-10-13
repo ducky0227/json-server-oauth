@@ -136,7 +136,7 @@ const login: Handler = (req, res, next) => {
 		})
 		.then((access_token: string) => {
 			const { password: _, ...userWithoutPassword } = user
-			res.status(200).jsonp({ access_token, user: userWithoutPassword })
+			res.status(200).jsonp({ access_token, user: userWithoutPassword, expires_in: JWT_EXPIRES_IN })
 		})
 		.catch((err) => {
 			if (err === 400) res.status(400).jsonp('Incorrect password')

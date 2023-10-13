@@ -113,7 +113,7 @@ const login = (req, res, next) => {
     })
         .then((access_token) => {
         const { password: _ } = user, userWithoutPassword = __rest(user, ["password"]);
-        res.status(200).jsonp({ access_token, user: userWithoutPassword });
+        res.status(200).jsonp({ access_token, user: userWithoutPassword, expires_in: constants_1.JWT_EXPIRES_IN });
     })
         .catch((err) => {
         if (err === 400)
