@@ -73,7 +73,7 @@ const create = (req, res, next) => {
                 if (error)
                     reject(error);
                 else
-                    resolve({ access_token: access_token, user });
+                    resolve({ access_token: access_token, user, expires_in: constants_1.JWT_EXPIRES_IN });
             });
         });
     })

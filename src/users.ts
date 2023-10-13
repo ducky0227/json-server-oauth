@@ -80,14 +80,14 @@ const create: Handler = (req, res, next) => {
 			}
 		})
 		.then((user: User) => {
-			return new Promise<{ access_token: string; user: User }>((resolve, reject) => {
+			return new Promise<{ access_token: string; user: User, expires_in: string }>((resolve, reject) => {
 				jwt.sign(
 					{ email },
 					JWT_SECRET_KEY,
 					{ expiresIn: JWT_EXPIRES_IN, subject: String(user.id) },
 					(error, access_token) => {
 						if (error) reject(error)
-						else resolve({ access_token: access_token!, user })
+						else resolve({ access_token: access_token!, user, expires_in: JWT_EXPIRES_IN })
 					}
 				)
 			})
