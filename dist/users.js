@@ -77,9 +77,9 @@ const create = (req, res, next) => {
             });
         });
     })
-        .then(({ access_token, user }) => {
+        .then(({ access_token, user, expires_in }) => {
         const { password: _ } = user, userWithoutPassword = __rest(user, ["password"]);
-        res.status(201).jsonp({ access_token, user: userWithoutPassword });
+        res.status(201).jsonp({ access_token, user: userWithoutPassword, expires_in: expires_in });
     })
         .catch(next);
 };
