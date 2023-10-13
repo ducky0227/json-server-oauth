@@ -73,13 +73,13 @@ const create = (req, res, next) => {
                 if (error)
                     reject(error);
                 else
-                    resolve({ access_token: access_token, user, expires_in: constants_1.JWT_EXPIRES_IN });
+                    resolve({ access_token: access_token, user });
             });
         });
     })
-        .then(({ access_token, user, expires_in }) => {
+        .then(({ access_token, user }) => {
         const { password: _ } = user, userWithoutPassword = __rest(user, ["password"]);
-        res.status(201).jsonp({ access_token, user: userWithoutPassword, expires_in: expires_in });
+        res.status(201).jsonp({ access_token, user: userWithoutPassword, expires_in: 3600 });
     })
         .catch(next);
 };
@@ -113,7 +113,7 @@ const login = (req, res, next) => {
     })
         .then((access_token) => {
         const { password: _ } = user, userWithoutPassword = __rest(user, ["password"]);
-        res.status(200).jsonp({ access_token, user: userWithoutPassword, expires_in: constants_1.JWT_EXPIRES_IN });
+        res.status(200).jsonp({ access_token, user: userWithoutPassword, expires_in: 3600 });
     })
         .catch((err) => {
         if (err === 400)

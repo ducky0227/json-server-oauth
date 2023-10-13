@@ -80,21 +80,21 @@ const create: Handler = (req, res, next) => {
 			}
 		})
 		.then((user: User) => {
-			return new Promise<{ access_token: string; user: User, expires_in: string }>((resolve, reject) => {
+			return new Promise<{ access_token: string; user: User }>((resolve, reject) => {
 				jwt.sign(
 					{ email },
 					JWT_SECRET_KEY,
 					{ expiresIn: JWT_EXPIRES_IN, subject: String(user.id) },
 					(error, access_token) => {
 						if (error) reject(error)
-						else resolve({ access_token: access_token!, user, expires_in: JWT_EXPIRES_IN })
+						else resolve({ access_token: access_token!, user })
 					}
 				)
 			})
 		})
-		.then(({ access_token, user, expires_in }) => {
+		.then(({ access_token, user }) => {
 			const { password: _, ...userWithoutPassword } = user
-			res.status(201).jsonp({ access_token, user: userWithoutPassword, expires_in: expires_in })
+			res.status(201).jsonp({ access_token, user: userWithoutPassword, expires_in: 3600 })
 		})
 		.catch(next)
 }
@@ -136,7 +136,7 @@ const login: Handler = (req, res, next) => {
 		})
 		.then((access_token: string) => {
 			const { password: _, ...userWithoutPassword } = user
-			res.status(200).jsonp({ access_token, user: userWithoutPassword, expires_in: JWT_EXPIRES_IN })
+			res.status(200).jsonp({ access_token, user: userWithoutPassword, expires_in: 3600 })
 		})
 		.catch((err) => {
 			if (err === 400) res.status(400).jsonp('Incorrect password')
